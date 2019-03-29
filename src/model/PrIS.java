@@ -40,6 +40,7 @@ public class PrIS {
 	 * moet worden.
 	 * 
 	 */
+	
 	public PrIS() {
 		deDocenten = new ArrayList<Docent>();
 		deStudenten = new ArrayList<Student>();
