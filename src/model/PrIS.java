@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,11 +13,13 @@ import java.util.Calendar;
 import model.klas.Klas;
 import model.persoon.Docent;
 import model.persoon.Student;
+import model.les.Les;
 
 public class PrIS {
 	private ArrayList<Docent> deDocenten;
 	private ArrayList<Student> deStudenten;
 	private ArrayList<Klas> deKlassen;
+	private ArrayList<Les> hetRooster;
 
 	/**
 	 * De constructor maakt een set met standaard-data aan. Deze data moet nog
@@ -44,6 +47,8 @@ public class PrIS {
 		deDocenten = new ArrayList<Docent>();
 		deStudenten = new ArrayList<Student>();
 		deKlassen = new ArrayList<Klas>(); // Inladen klassen
+		hetRooster = new ArrayList<Les>();
+		vulRooster(hetRooster);
 		vulKlassen(deKlassen); // Inladen studenten in klassen
 		vulStudenten(deStudenten, deKlassen);
 		// Inladen docenten
@@ -160,6 +165,51 @@ public class PrIS {
 		}
 	}
 
+	private void vulRooster(ArrayList<Les> pRooster) {
+		String csvFile = "././CSV/rooster.csv";
+		BufferedReader br = null;
+		String line = "";
+		String cvsSplitBy = ",";
+
+		try {
+			int count = 0;
+			br = new BufferedReader(new FileReader(csvFile));
+			while ((line = br.readLine()) != null) {
+				// use comma as separator
+				line = line.replace("\"", "");
+				String[] element = line.split(cvsSplitBy);
+				String naam = element[0];
+				String cursuscd = element[1];
+				int startweek = Integer.parseInt(element[2]);
+				String startdag = element[3];
+				String datum = element[4];
+				String starttijd = element[5];
+				String eindtijd = element[8];
+				Double duur = Double.parseDouble(element[9].replace(":", "."));
+				String werkvorm = element[10];
+				String docent = element[11];
+				String lokaal = element[12];
+				String klas = element[13];
+				String facult = element[14];
+				pRooster.add(new Les(naam, cursuscd, startweek, startdag, datum, starttijd, eindtijd, duur, werkvorm, docent, lokaal, klas, facult));
+
+			}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			// close the bufferedReader if opened.
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 	private void vulKlassen(ArrayList<Klas> pKlassen) {
 		// TICT-SIE-VIA is de klascode die ook in de rooster file voorkomt
 		// V1A is de naam van de klas die ook als file naam voor de studenten van die
