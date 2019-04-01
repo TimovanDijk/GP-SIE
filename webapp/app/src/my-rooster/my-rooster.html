@@ -1,0 +1,74 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/scheduler-component/scheduler-component.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="my-rooster">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      span {
+        @apply --paper-font-body1;
+      }
+
+    </style>
+    
+    <scheduler-component
+          default-view="month"
+          max-time="21:00:00" min-time="08:00:00"
+          event-color="#003fff"
+          text-color="#ecf0f1"
+          events='[
+             {"title" : "TICT-V1GP-18_2018","start" : "2019-04-01T16:00:00","end" : "2019-04-01T19:00:00","allDay" :false},
+             {"title" : "TICT-V1GP-18_2018","start" : "2019-04-03T13:00:00","end" : "2019-04-03T16:00:00","allDay" :false},
+             {"title" : "TICT-V1GP-18_2018","start" : "2019-04-05T13:00:00","end" : "2019-04-05T16:00:00","allDay" :false}]'
+            header='{"center":"title","left":"prev,next,today","right":"month,agendaWeek,agendaDay"}'>
+	</scheduler-component>
+	
+	<iron-ajax
+      id="rooster_ophalen"
+      method="POST"
+      url="/rooster/ophalen"
+      handle-as="json"
+      on-response="_rooster_ophalen_response_handler">
+	</iron-ajax>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+      /* _xxxx private              : geen external data binding      - geen notify
+         _c_xx private constant     : geen external binding, constant - geen notify
+         c_xx  public constant      : one way external databinding [[c_xx]] - geen notify nodig
+         xxxx  public               : two way external databinding {{xxxx}} - notify nodig
+      */
+      Polymer({
+        is: 'my-rooster',
+
+        properties: {
+          c_username: {
+            type: String,
+          },
+          
+          _rooster_ophalen_request_handler: function() {
+              console.log("_rooster_ophalen_request_handler");
+              this.$.ajax_rooster_ophalen.contentType="application/json";
+              this.$.ajax_medestudenten_ophalen.generateRequest();
+            },
+            
+            
+    		_rooster_ophalen_response_handler: function(request) {
+              console.log("_rooster_ophalen_respone_handler");
+              this._c_rooster = request.detail.response;
+            },
+        },
+        
+      });
+    })();
+  </script>
+</dom-module>
