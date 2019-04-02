@@ -1,0 +1,158 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="stylesheet" href="../../bower_components/smart-core/source/styles/smart.default.css" type="text/css">
+
+<dom-module id="my-contact">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      span {
+        @apply --paper-font-body1;
+      }
+      
+      body {
+			margin: 0px;
+			padding: 0px;
+		}
+
+		smart-card.basic-card .card-content,
+		smart-card.basic-card .card-action {
+			box-sizing: border-box;
+			padding: 20px;
+			color: white;
+			background-color: #878986;
+			border-bottom: 1px solid rgba(160,160,160,0.2);
+			border-radius: 2px 2px 2px 2px;
+		}
+
+		smart-card.basic-card .card-title {
+			font-size: 18px;
+		}
+
+		smart-card.basic-card a {
+			color: #ffab40;
+			transition: color .3s ease;
+			text-transform: uppercase;
+			border-bottom: none;
+			text-decoration: none;
+			margin-right: 20px;
+		}
+
+			smart-card.basic-card a:hover {
+				color: #ffd8a6;
+			}
+			
+		.avatar {
+			text-decoration:none;
+			background:#36bed4;
+			color:#36bed4;
+			position:relative;
+			padding-left:55px;
+			width:150px;
+			height:180px;
+			border-radius:250px;
+			display:block;
+			line-height:240%;
+			overflow:hidden;
+			float:right;
+		}
+		
+		.avatar:before, .avatar:after {
+			position:absolute;
+			color:#36bed4;
+			background:white;
+			box-shadow:0 0 10px 0px rgba(0,0,0,0.2);
+		}
+		
+		.avatar:before {
+			content: "\00a0";
+			border: 0px solid white;
+			border-radius: 75px;
+			top: 20px;
+			left: 50%;
+			height: 100px;
+			width: 100px;
+			line-height: 70%;
+			font-size: 44px;
+			font-weight: normal;
+			text-indent: -1px;
+			margin-left: -25%;
+			z-index:5;
+		}
+		
+		.avatar:after {
+			content: "\00a0";
+			border-radius: 20px;
+			top: 115px;
+			left: 50%;
+			width: 100px;
+			height: 103px;
+			text-align: center;
+			font-size: 33px;
+			font-weight: bold;
+			line-height: 130%;
+			margin-left: -25%;
+		}
+	
+    </style>
+    
+    <smart-card class="basic-card">
+        <div class="card-content">
+            <span class="card-title">David James</span>
+            <a class="avatar" href="#"></a>
+            <p>
+                Docent Analysis
+            </p>
+            <p>
+            	E-mail: david.james@hu.nl
+            </p>
+        </div>
+        <div class="card-action">
+            <a href="#">www.instagram.com/"david_james"</a>
+        </div>
+    </smart-card>
+    
+    <smart-card class="basic-card">
+        <div class="card-content">
+            <span class="card-title">Bessie Berry</span>
+            <a class="avatar" href="#"></a>
+            <p>
+                Docent Programming
+            </p>
+            <p>
+            	E-mail: bessie.berry@hu.nl
+            </p>
+        </div>
+        <div class="card-action">
+            <a href="#">www.instagram.com/"bessie_berry"</a>
+        </div>
+    </smart-card>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+      /* _xxxx private              : geen external data binding      - geen notify
+         _c_xx private constant     : geen external binding, constant - geen notify
+         c_xx  public constant      : one way external databinding [[c_xx]] - geen notify nodig
+         xxxx  public               : two way external databinding {{xxxx}} - notify nodig
+      */
+      Polymer({
+        is: 'my-contact',
+
+        properties: {
+          c_username: {
+            type: String,
+          },
+          
+        },
+        
+      });
+    })();
+  </script>
+</dom-module>
