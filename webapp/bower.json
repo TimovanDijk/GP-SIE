@@ -19,7 +19,8 @@
     "paper-input": "PolymerElements/paper-input#^2.1.1",
     "paper-toast": "PolymerElements/paper-toast#^2.1.0",
     "mp-calendar": "^2.2.0",
-    "scheduler-component": "HaithemMosbahi/scheduler-component#^1.6.0"
+    "scheduler-component": "HaithemMosbahi/scheduler-component#^1.6.0",
+    "smart-card": "HTMLElements/smart-card#^1.0.0"
   },
   "devDependencies": {},
   "ignore": [],
