@@ -1,0 +1,43 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="stylesheet" href="../../bower_components/smart-core/source/styles/smart.default.css" type="text/css">
+
+<dom-module id="my-resultaten">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      span {
+        @apply --paper-font-body1;
+      }
+	
+    </style>
+    
+    
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+      /* _xxxx private              : geen external data binding      - geen notify
+         _c_xx private constant     : geen external binding, constant - geen notify
+         c_xx  public constant      : one way external databinding [[c_xx]] - geen notify nodig
+         xxxx  public               : two way external databinding {{xxxx}} - notify nodig
+      */
+      Polymer({
+        is: 'my-resultaten',
+
+        properties: {
+          c_username: {
+            type: String,
+          },
+          
+        },
+        
+      });
+    })();
+  </script>
+</dom-module>

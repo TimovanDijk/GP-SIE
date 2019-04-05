@@ -100,8 +100,8 @@
       handle-as="json"
       on-response="_ophalen_lesinfo_response_handler">
     </iron-ajax>
-
-
+    
+    
   </template>
 
   <script>
@@ -126,6 +126,7 @@
                                                                regel in de functie dat er niets gebeurd
                                                                als c_visible false is */
           },
+          
           systeemdatumlokaal: {
             type: String,
             computed: "_standaarddatumstring_to_lokaledatumstring(systeemdatumstandaard)",
