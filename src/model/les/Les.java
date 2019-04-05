@@ -1,9 +1,15 @@
 package model.les;
 
+import model.les.afwezigheid.Absentie;
+import model.les.afwezigheid.Gepland;
+import model.les.afwezigheid.Ziek;
+
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Les {
+    private String ziek;
     private String naam;
     private String cursuscode;
     private int startweek;
@@ -18,8 +24,9 @@ public class Les {
     private String klas;
     private String faculteit;
     private int grootte;
+    private ArrayList<Absentie> afwezigen;
 
-    public Les(String naam, String cursuscode, int startweek, String startdag, String startdatum, String starttijd, String eindtijd, double duur, String werkvorm, String docent, String lokaalnummer, String klas, String faculteit){
+    public Les(String naam, String cursuscode, int startweek, String startdag, String startdatum, String starttijd, String eindtijd, double duur, String werkvorm, String docent, String lokaalnummer, String klas, String faculteit) {
         this.naam = naam;
         this.cursuscode = cursuscode;
         this.startweek = startweek;
@@ -33,6 +40,17 @@ public class Les {
         this.lokaalnummer = lokaalnummer;
         this.klas = klas;
         this.faculteit = faculteit;
+    }
+
+    public String isAfwezig(String lln) {
+        String s = "false";
+
+        for (int i = 0; i < afwezigen.size(); i++) {
+            if (afwezigen.get(i).matchLeerling(lln)) {
+                s = "true: " + afwezigen.get(i).getReden();
+            }
+        }
+        return s;
     }
 
     public String getNaam() {
@@ -63,6 +81,10 @@ public class Les {
         return docent;
     }
 
+    public String getZieken() {
+        return ziek;
+    }
+
     public String getFaculteit() {
         return faculteit;
     }
@@ -91,12 +113,55 @@ public class Les {
         return starttijd;
     }
 
-    public boolean equalsKlas(String kl){
+    public boolean equalsKlas(String kl) {
         boolean eq = false;
-        if (klas.contains(kl)){
+        if (klas.contains(kl)) {
             eq = true;
         }
         return eq;
+    }
+
+    public boolean bestaatAl(String lln) {
+        boolean bestaatal = false;
+        for (int i = 0; i < afwezigen.size(); i++) {
+            if (afwezigen.get(i).matchLeerling(lln)) {
+                bestaatal = true;
+            }
+        }
+        return bestaatal;
+    }
+
+    public void addZieke(String lln) {
+        boolean bestaatal = bestaatAl(lln);
+        if (!bestaatal) {
+            afwezigen.add(new Ziek(lln));
+        }
+    }
+
+    public void removeAbsentie(String lln) {
+        for (int i = 0; i < afwezigen.size(); i++) {
+            if (afwezigen.get(i).matchLeerling(lln)) {
+                afwezigen.remove(i);
+            }
+        }
+    }
+
+    public void addAbsentie(String lln) {
+        boolean bestaatal = bestaatAl(lln);
+        if (!bestaatal) {
+            afwezigen.add(new Absentie(lln));
+        }
+    }
+
+    public void addGepland(String lln, String reden) {
+        boolean bestaatal = bestaatAl(lln);
+        if (!bestaatal) {
+            afwezigen.add(new Gepland(lln, reden));
+        }
+    }
+
+    public ArrayList<Absentie> getAfwezigen() {
+        return afwezigen;
     }
 
     @Override
