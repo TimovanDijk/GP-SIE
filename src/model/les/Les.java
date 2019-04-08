@@ -109,7 +109,7 @@ public class Les {
         boolean bestaatal = false;
         for (int i = 0; i < afwezigen.size(); i++) {
             if (afwezigen.get(i).matchLeerling(lln)) {
-            bestaatal = true;
+                bestaatal = true;
             }
         }
 
@@ -123,7 +123,7 @@ public class Les {
         }
     }
 
-    public String checkAbsentiereden(String lln){
+    public String checkAbsentiereden(String lln) {
         String reden = "";
         for (Absentie absentie : afwezigen) {
             if (absentie.matchLeerling(lln)) {
@@ -133,7 +133,7 @@ public class Les {
         return reden;
     }
 
-    public String getKleurcode(String lln){
+    public String getKleurcode(String lln) {
         String code = "#003FFF";
         for (Absentie absentie : afwezigen) {
             if (absentie.matchLeerling(lln)) {

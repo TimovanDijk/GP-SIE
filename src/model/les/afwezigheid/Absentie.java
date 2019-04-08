@@ -5,19 +5,19 @@ public class Absentie {
     private String reden;
 
 
-    public Absentie(String lln){
+    public Absentie(String lln) {
         this.leerlingnummer = lln;
         reden = "Niet gegeven";
     }
 
-    public Absentie(String lln, String reden){
+    public Absentie(String lln, String reden) {
         this.leerlingnummer = lln;
         this.reden = reden;
     }
 
-    public boolean matchLeerling(String lln){
+    public boolean matchLeerling(String lln) {
         boolean waar = false;
-        if (leerlingnummer == lln){
+        if (leerlingnummer == lln) {
             waar = true;
         }
         return waar;
