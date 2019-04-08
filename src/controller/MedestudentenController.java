@@ -48,12 +48,13 @@ public class MedestudentenController implements Handler {
 	private void ophalen(Conversation conversation) {
 		JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
 		String lGebruikersnaam = lJsonObjectIn.getString("username");
+		System.out.println(lGebruikersnaam);
 		Student lStudentZelf = informatieSysteem.getStudent(lGebruikersnaam);
 		String  lGroepIdZelf = lStudentZelf.getGroepId();
 		
 		Klas lKlas = informatieSysteem.getKlasVanStudent(lStudentZelf);		// klas van de student opzoeken
 
-    List<Student> lStudentenVanKlas = lKlas.getStudenten();	// medestudenten opzoeken
+		List<Student> lStudentenVanKlas = lKlas.getStudenten();	// medestudenten opzoeken
 		
 		JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();						// Uiteindelijk gaat er een array...
 		
@@ -69,7 +70,7 @@ public class MedestudentenController implements Handler {
 					.add("id", lMedeStudent.getStudentNummer())																	//vul het JsonObject		     
 					.add("firstName", lMedeStudent.getVoornaam())	
 					.add("lastName", lLastName)				     
-				  .add("sameGroup", lZelfdeGroep);					     
+					.add("sameGroup", lZelfdeGroep);					     
 			  
 			  lJsonArrayBuilder.add(lJsonObjectBuilderVoorStudent);													//voeg het JsonObject aan het array toe				     
 			}
@@ -95,29 +96,31 @@ public class MedestudentenController implements Handler {
 		// tot het zelfde team hoort opgenomen.
 		
 		//Het Json-array heeft als naam: "groupMembers"
-  	JsonArray lGroepMembers_jArray = lJsonObjectIn.getJsonArray("groupMembers"); 
-    if (lGroepMembers_jArray != null) { 
-    	// bepaal op basis van de huidige tijd een unieke string
-    	Calendar lCal = Calendar.getInstance();
-    	long lMilliSeconds = lCal.getTimeInMillis();
-    	String lGroepId = String.valueOf(lMilliSeconds);   
-    	
-    	lStudent.setGroepId(lGroepId);
-    	for (int i=0;i<lGroepMembers_jArray.size();i++){
-    		JsonObject lGroepMember_jsonObj = lGroepMembers_jArray.getJsonObject(i );
-    		int lStudentNummer = lGroepMember_jsonObj.getInt("id");
-    		boolean lZelfdeGroep = lGroepMember_jsonObj.getBoolean("sameGroup");
-    		if (lZelfdeGroep) {
-    			Student lGroepStudent = informatieSysteem.getStudent(lStudentNummer);
-     		  lGroepStudent.setGroepId(lGroepId);
-    		}
-    	}
-    }
-    
-  	JsonObjectBuilder lJob =	Json.createObjectBuilder(); 
-  	lJob.add("errorcode", 0);
-   	//nothing to return use only errorcode to signal: ready!
-  	String lJsonOutStr = lJob.build().toString();
- 		conversation.sendJSONMessage(lJsonOutStr);					// terug naar de Polymer-GUI!
-	}
+		  	JsonArray lGroepMembers_jArray = lJsonObjectIn.getJsonArray("groupMembers"); 
+		    if (lGroepMembers_jArray != null) { 
+		    	// bepaal op basis van de huidige tijd een unieke string
+		    	Calendar lCal = Calendar.getInstance();
+		    	long lMilliSeconds = lCal.getTimeInMillis();
+		    	String lGroepId = String.valueOf(lMilliSeconds);   
+		    	
+		    	lStudent.setGroepId(lGroepId);
+		    	for (int i=0;i<lGroepMembers_jArray.size();i++){
+		    		JsonObject lGroepMember_jsonObj = lGroepMembers_jArray.getJsonObject(i );
+		    		int lStudentNummer = lGroepMember_jsonObj.getInt("id");
+		    		boolean lZelfdeGroep = lGroepMember_jsonObj.getBoolean("sameGroup");
+		    		if (lZelfdeGroep) {
+		    			Student lGroepStudent = informatieSysteem.getStudent(lStudentNummer);
+		     		  lGroepStudent.setGroepId(lGroepId);
+		    		}
+		    	}
+		    }
+		    
+		  	JsonObjectBuilder lJob =	Json.createObjectBuilder(); 
+		  	lJob.add("errorcode", 0);
+		   	//nothing to return use only errorcode to signal: ready!
+		  	String lJsonOutStr = lJob.build().toString();
+		 		conversation.sendJSONMessage(lJsonOutStr);					// terug naar de Polymer-GUI!
+			}
+	
+	
 }

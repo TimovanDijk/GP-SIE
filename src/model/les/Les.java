@@ -1,40 +1,32 @@
 package model.les;
 
 import model.les.afwezigheid.Absentie;
-import model.les.afwezigheid.Gepland;
-import model.les.afwezigheid.Ziek;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Les {
     private String ziek;
     private String naam;
     private String cursuscode;
-    private int startweek;
     private String startdag;
     private String startdatum; // even checken met date-format uit de csv....
     private String starttijd; //same als heirboven met tijd
     private String eindtijd; //^^
-    private double duur; // deze zal in uren zijn
     private String werkvorm;
     private String docent;
     private String lokaalnummer;
     private String klas;
     private String faculteit;
     private int grootte;
-    private ArrayList<Absentie> afwezigen;
+    private ArrayList<Absentie> afwezigen = new ArrayList<Absentie>();
 
-    public Les(String naam, String cursuscode, int startweek, String startdag, String startdatum, String starttijd, String eindtijd, double duur, String werkvorm, String docent, String lokaalnummer, String klas, String faculteit) {
+    public Les(String naam, String cursuscode, String startdag, String startdatum, String starttijd, String eindtijd, String werkvorm, String docent, String lokaalnummer, String klas, String faculteit) {
         this.naam = naam;
         this.cursuscode = cursuscode;
-        this.startweek = startweek;
         this.startdag = startdag;
         this.startdatum = startdatum;
         this.starttijd = starttijd;
         this.eindtijd = eindtijd;
-        this.duur = duur;
         this.werkvorm = werkvorm;
         this.docent = docent;
         this.lokaalnummer = lokaalnummer;
@@ -61,16 +53,8 @@ public class Les {
         return startdatum;
     }
 
-    public double getDuur() {
-        return duur;
-    }
-
     public int getGrootte() {
         return grootte;
-    }
-
-    public int getStartweek() {
-        return startweek;
     }
 
     public String getCursuscode() {
@@ -125,17 +109,47 @@ public class Les {
         boolean bestaatal = false;
         for (int i = 0; i < afwezigen.size(); i++) {
             if (afwezigen.get(i).matchLeerling(lln)) {
-                bestaatal = true;
+            bestaatal = true;
             }
         }
+
         return bestaatal;
     }
 
     public void addZieke(String lln) {
         boolean bestaatal = bestaatAl(lln);
         if (!bestaatal) {
-            afwezigen.add(new Ziek(lln));
+            afwezigen.add(new Absentie(lln, "Ziek"));
         }
+    }
+
+    public String checkAbsentiereden(String lln){
+        String reden = "";
+        for (Absentie absentie : afwezigen) {
+            if (absentie.matchLeerling(lln)) {
+                reden = absentie.getReden();
+            }
+        }
+        return reden;
+    }
+
+    public String getKleurcode(String lln){
+        String code = "#003FFF";
+        for (Absentie absentie : afwezigen) {
+            if (absentie.matchLeerling(lln)) {
+                String reden = absentie.getReden();
+
+                if (reden == "Niet gegeven") {
+                    code = "#FC0000";
+                }
+                if (reden == "Ziek") {
+                    code = "#8F3795";
+                } else {
+                    code = "#FB7600";
+                }
+            }
+        }
+        return code;
     }
 
     public void removeAbsentie(String lln) {
@@ -156,9 +170,10 @@ public class Les {
     public void addGepland(String lln, String reden) {
         boolean bestaatal = bestaatAl(lln);
         if (!bestaatal) {
-            afwezigen.add(new Gepland(lln, reden));
+            afwezigen.add(new Absentie(lln, reden));
         }
     }
+
 
     public ArrayList<Absentie> getAfwezigen() {
         return afwezigen;

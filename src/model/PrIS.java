@@ -127,6 +127,10 @@ public class PrIS {
 		return "undefined";
 	}
 
+	public ArrayList<Les> getHetRooster() {
+		return hetRooster;
+	}
+
 	private void vulDocenten(ArrayList<Docent> pDocenten) {
 		String csvFile = "././CSV/docenten.csv";
 		BufferedReader br = null;
@@ -180,18 +184,16 @@ public class PrIS {
 				String[] element = line.split(cvsSplitBy);
 				String naam = element[0];
 				String cursuscd = element[1];
-				int startweek = Integer.parseInt(element[2]);
 				String startdag = element[3];
 				String datum = element[4];
 				String starttijd = element[5];
 				String eindtijd = element[8];
-				Double duur = Double.parseDouble(element[9].replace(":", "."));
 				String werkvorm = element[10];
 				String docent = element[11];
 				String lokaal = element[12];
 				String klas = element[13];
 				String facult = element[14];
-				pRooster.add(new Les(naam, cursuscd, startweek, startdag, datum, starttijd, eindtijd, duur, werkvorm, docent, lokaal, klas, facult));
+				pRooster.add(new Les(naam, cursuscd, startdag, datum, starttijd, eindtijd, werkvorm, docent, lokaal, klas, facult));
 
 			}
 
