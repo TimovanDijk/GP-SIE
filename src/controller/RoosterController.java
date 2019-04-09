@@ -32,7 +32,7 @@ public class RoosterController implements Handler {
         if (conversation.getRequestedURI().startsWith("/rooster/ophalen")) {
             rooster(conversation);
         } else {
-
+            roosterDocent(conversation);
         }
     }
 
@@ -70,5 +70,34 @@ public class RoosterController implements Handler {
 
     }
 
+    private void roosterDocent(Conversation conversation) {
+        JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
+        String lGebruikersnaam = lJsonObjectIn.getString("naam");
+        Docent lDocentZelf = informatieSysteem.getDocent(lGebruikersnaam);
+
+        ArrayList<Les> prooster = informatieSysteem.getHetRooster();
+
+        JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();
+
+        for (Les lLes : prooster) {
+            System.out.println(lLes);
+            if (lLes.getDocent().contains(lDocentZelf.getGebruikersnaam())) {
+                JsonObjectBuilder lJsonObjectBuilderVoorLessen = Json.createObjectBuilder();
+                lJsonObjectBuilderVoorLessen
+                        .add("naam", lLes.getNaam())
+                        .add("datum", lLes.getStartdatum())
+                        .add("starttijd", lLes.getStarttijd())
+                        .add("eindtijd", lLes.getEindtijd())
+                        .add("docent", lLes.getDocent())
+                        .add("lokaal", lLes.getLokaalnummer())
+                        .add("klas", lLes.getKlas())
+                        .add("afwezigen", lLes.afwezigenString());
+                lJsonArrayBuilder.add(lJsonObjectBuilderVoorLessen);
+            }
+        }
+        String lJsonOutStr = lJsonArrayBuilder.build().toString();                                                // maak er een string van
+        conversation.sendJSONMessage(lJsonOutStr);
+
+    }
 
 }

@@ -174,6 +174,13 @@ public class Les {
         }
     }
 
+    public String afwezigenString(){
+        String s = "";
+        for (Absentie absentie : afwezigen){
+            s += absentie.toString() + "\n";
+        }
+    return s;
+    }
 
     public ArrayList<Absentie> getAfwezigen() {
         return afwezigen;
